@@ -1,0 +1,1073 @@
+#+TITLE: From Emacs-Lisp to Clojure
+#+AUTHOR: Yen-Chin, Lee
+#+EMAIL: coldnew.tw@gmail.com
+
+#+OPTIONS: toc:nil num:nil ^:nil
+#+REMARK_TEMPLATE: assets/template.html
+
+* Agenda
+
+#+HTML: <br>
+
+- A simple tutorial on emacs-lisp
+
+- About Clojure
+
+- Clojure by example
+
+- Clojure's building system
+
+- ClojureScript
+
+- Resources
+
+* Emacs-Lisp Tutorial
+:PROPERTIES:
+:REMARK_CLASS:    center, middle, inverse
+:END:
+
+#+HTML: <br>
+
+#+ATTR_HTML: :width 20%
+[[file:picts/emacs.png]]
+
+** S-Expression is simple
+
+#+HTML: <br>
+
+- Use =C-x C-e= to eval S-Expression
+
+  #+BEGIN_SRC emacs-lisp
+    ;; S-Expression
+    (SYMBOL PARAMETER1 PARAMETER2 ...)
+
+    ;; 1 + 2 + 3 + 4
+    (+ 1 2 3 4)                             ; => 10
+
+    ;; (1 + 2) * (3 + 4)
+    (* (+ 1 2)
+       (+ 3 4))                             ; => 21
+
+    ;; show "Hello LISP!" in emacs
+    (message "Hello LISP!")                 ; => Hello LISP!
+
+    ;; `quote' means not eval it
+    '(1 2 3 4)                              ; => (1 2 3 4)
+    (quote (1 2 3 4))                       ; => (1 2 3 4)
+
+    ;; t is `true', nil is `false'
+    (if t "true" "false")                   ; => true
+    (if nil "true" "false")                 ; => false
+  #+END_SRC
+
+** Create a library
+
+#+HTML: <br>
+
+- Assume you create a library call =aa.el=
+
+- You got the namespace =aa=
+
+- All function/variable should start with =aa-=
+
+  #+BEGIN_SRC emacs-lisp
+    (require 'cl)                           ; import library `cl.el'
+
+    (defvar aa--count 0
+      "A private variable to store current count value.")
+
+    (defun aa-add (a b)
+      "Return A + b."
+      (+ a b))
+
+    (defun aa-add-to (a)
+      "Add a to count, return count."
+      (let ((s (+ aa--count a)))
+        (setq aa--count s)))
+
+    (provide 'aa)
+    ;; aa.el ends here
+  #+END_SRC
+
+** Find function/variable doc
+
+#+HTML: <br>
+
+- Find function doc with =M-x describe-function=
+
+- Find variable doc with =M-x describe-variable=
+
+#+ATTR_HTML: :width 100%
+[[file:picts/elisp-doc.png]]
+
+* Clojure
+:PROPERTIES:
+:REMARK_CLASS:    center, middle, inverse
+:END:
+
+#+HTML: <br>
+
+#+ATTR_HTML: :width 20%
+[[file:picts/clojure.png]]
+
+** Clojure - A LISP dialect on JVM
+
+#+HTML: <br>
+
+- Functional programming language (immutability) create in 2007
+
+- Host on JVM
+
+- A LISP dialect (LISP-1)  (=Emacs-Lisp is LISP-2=)
+
+- Open Source under Eclipse Public License
+
+- Create by [[https://github.com/richhickey][Rich Hickey]]
+
+#+HTML: <br>
+
+#+ATTR_HTML: :width 40%
+[[file:picts/rich-hickey.png]]
+
+** LISP trending akas why Clojure
+
+#+HTML: <br>
+
+#+ATTR_HTML: :width 60%
+[[file:picts/lisp%20trend1.png]]
+
+#+ATTR_HTML: :width 60%
+[[file:picts/lisp%20trend2.png]]
+
+** Clojure and it's dialect
+
+#+HTML: <br>
+
+- [[http://clojure.org/][Clojure]] (JVM)
+
+- [[https://github.com/clojure/clojurescript][ClojureScript]] (Javascript)
+
+- [[https://github.com/clojure/clojure-clr][ClojureCLR]] (.NET)
+
+* Clojure vs Emacs-Lisp
+:PROPERTIES:
+:REMARK_CLASS:    center, middle, inverse
+:END:
+
+#+HTML: <br>
+
+#+ATTR_HTML: :width 20%
+[[file:picts/clojure.png]]
+
+http://www.tryclj.com/
+
+** Boolean
+
+#+HTML: <br>
+
+- Emacs-Lisp
+
+  #+BEGIN_SRC emacs-lisp
+    t                                       ; => true
+    nil                                     ; => false
+    ;; `nil' is null in emacs-lisp
+  #+END_SRC
+
+- Clojure
+
+  #+BEGIN_SRC clojure
+    true                                    ; => true
+    false                                   ; => false
+    nil                                     ; => nil
+
+    (= nil false)                           ; => false
+  #+END_SRC
+
+** Numbers
+
+#+HTML: <br>
+
+- Emacs-Lisp
+
+  #+BEGIN_SRC emacs-lisp
+    1                                       ; => 1
+    1.2                                     ; => 1.2
+    1e6                                     ; => 1000000.0
+    ;; different from clojure
+    #b101                                   ; => 5
+    #x12                                    ; => 18
+  #+END_SRC
+
+- Clojure
+
+  #+BEGIN_SRC clojure
+    ;; same as emacs-lisp
+    1                                       ; => 1
+    1.2                                     ; => 1.2
+    1e6                                     ; => 1000000.0
+    ;; different from emacs-lisp
+    2r101                                   ; => 5
+    25/3                                    ; => 25/3
+    0x12                                    ; => 18
+  #+END_SRC
+
+** String
+
+#+HTML: <br>
+
+- Emacs-Lisp
+
+  #+BEGIN_SRC emacs-lisp
+    "Hello LISP!"                           ; => "Hello LISP!"
+  #+END_SRC
+
+- Clojure
+
+  #+BEGIN_SRC clojure
+    "Hello LISP!"                           ; => "Hello LISP!"
+  #+END_SRC
+
+** Characters
+
+#+HTML: <br>
+
+- Emacs-Lisp
+
+  #+BEGIN_SRC emacs-lisp
+    ?a                                      ; a => 97
+    ?A                                      ; A => 65
+  #+END_SRC
+
+- Clojure
+
+  #+BEGIN_SRC clojure
+    \a                                      ; a => 97
+    \A                                      ; A => 65
+  #+END_SRC
+
+** Lists
+
+#+HTML: <br>
+
+- Emacs-Lisp
+
+  #+BEGIN_SRC emacs-lisp
+    '(1 2 3 4 5)                            ; => (1 2 3 4 5)
+
+    (nth 2 '(1 2 3 4 5))                    ; => 3
+    (length '(1 2 3 4 5))                   ; => 5
+
+    (cons  '3 '(1 2))                       ; (3 1 2)
+  #+END_SRC
+
+- Clojure
+
+  #+BEGIN_SRC clojure
+    '(1 2 3 4 5)                            ; => (1 2 3 4 5)
+
+    (nth '(1 2 3 4 5) 2)                    ; => 3
+    (count '(1 2 3 4 5))                    ; => 5
+
+    (conj  '(1 2) 3)                        ; (3 1 2)
+  #+END_SRC
+
+** Vectors
+
+#+HTML: <br>
+
+- Emacs-Lisp
+
+  #+BEGIN_SRC emacs-lisp
+    '[3 4 5]                                ; => [3 4 5]
+    (vector 3 4 5)                          ; => [3 4 5]
+
+    (length (vector 3 4 5))                 ; => 3
+    (elt '[3 4 5] 1)                        ; => 4
+  #+END_SRC
+
+- Clojure
+
+  #+BEGIN_SRC clojure
+    [3 4 5]                                 ; => [3 4 5]
+    (vector 3 4 5)                          ; => [3 4 5]
+
+    (count [3 4 5])                         ; => 3
+    (nth [3 4 5] 1)                         ; => 4
+  #+END_SRC
+
+** Sets
+
+#+HTML: <br>
+
+- Emacs-Lisp
+
+  #+BEGIN_SRC emacs-lisp
+    ;; seems like emacs-lisp doesn't has `hash-set' ?
+  #+END_SRC
+
+- Clojure
+
+  #+BEGIN_SRC clojure
+    #{1 2 3}                                ; => #{1 2 3}
+    (hash-set 1 2 3)                        ; => #{1 2 3}
+    (hash-set 1 2 3 3)                      ; => #{1 3 2}
+  #+END_SRC
+
+** Map
+
+#+HTML: <br>
+
+- Emacs-Lisp
+
+  #+BEGIN_SRC emacs-lisp
+    '(:Apple "Mac" :Microsoft "Windows")    ; => (:Apple "Mac" :Microsoft "Windows")
+
+    (plist-get '(:Apple "Mac" :Microsoft "Windows") :Apple) ; => "Mac"
+  #+END_SRC
+
+- Clojure
+
+  #+BEGIN_SRC clojure
+    {:Apple "Mac" :Microsoft "Windows"} ; => {:Apple "Mac" :Microsoft "Windows"}
+
+    (:Apple {:Apple "Mac" :Microsoft "Windows"}) ; => "Mac"
+    ({:Apple "Mac" :Microsoft "Windows"} :Apple) ; => "Mac"
+  #+END_SRC
+
+** Variables
+
+#+HTML: <br>
+
+- Emacs-Lisp
+
+  #+BEGIN_SRC emacs-lisp
+    (defvar hello "hi"
+      "variable doc")                       ; => "hi"
+
+    (setq hello "world")                    ; => "world"
+
+    hello                                   ; => "world"
+  #+END_SRC
+
+- Clojure
+
+  #+BEGIN_SRC clojure
+    (def hello "variable doc"
+      "hi")                                 ; => "hi"
+
+    ;; No `setq` like function for clojure since variable is immutable
+
+    ;; NOTE: for java mutable variable, you can use `set!` to set the variable
+  #+END_SRC
+
+** Local Variables
+
+#+HTML: <br>
+
+- Emacs-Lisp
+
+  #+BEGIN_SRC emacs-lisp
+    (let ((x 1)
+          (y 2))
+      (+ x y))                              ; => 3
+
+    (let ((hello "hi"))
+      (setq hello "world")
+      hello)                                ; => "world"
+  #+END_SRC
+
+- Clojure
+
+  #+BEGIN_SRC clojure
+    (let [x 1
+          y 2]
+      (+ x y))                             ; => 3
+
+    (with-local-vars [hello "hi"]
+      (var-set hello "world")
+      @hello)                               ; => world
+  #+END_SRC
+
+** If ... Else
+
+- Emacs-Lisp
+
+  #+BEGIN_SRC emacs-lisp
+    (if "foo" "truthy" "falsey")            ;=> "truthy"
+    (if 0     "truthy" "falsey")            ;=> "truthy"
+    (if []    "truthy" "falsey")            ;=> "truthy"
+    (if nil   "truthy" "falsey")            ;=> "falsey"
+
+    (if t (progn
+            (print "print-true")
+            "true")
+        "false")
+  #+END_SRC
+
+  Only =nil= acts as =false=.
+
+- Clojure
+
+  #+BEGIN_SRC clojure
+    (if "foo" "truthy" "falsey")            ;=> "truthy"
+    (if 0     "truthy" "falsey")            ;=> "truthy"
+    (if []    "truthy" "falsey")            ;=> "truthy"
+    (if false "truthy" "falsey")            ;=> "falsey"
+    (if nil   "truthy" "falsey")            ;=> "falsey"
+
+    (if t (do
+            (println "print-true")
+            "true")
+        "false")
+  #+END_SRC
+
+  Everything except =nil= and =false= acts as =true=.
+
+** Loop
+
+#+HTML: <br>
+
+- Emacs-Lisp
+
+  #+BEGIN_SRC emacs-lisp
+    (require 'cl)                           ; for `cl-loop'
+
+    (let ((i 1))
+      (cl-loop (print (format "hello: %d" i))
+               (if (> i 10)
+                   (return)
+                   (setq i (+ i 1)))))
+  #+END_SRC
+
+- Clojure
+
+  #+BEGIN_SRC clojure
+    (loop [i 1]
+      (println (str "hello: " i))
+      (if (< i 10)
+        (recur (inc i))))                   ; tail recursion
+  #+END_SRC
+
+** Functions
+
+- Emacs-Lisp
+
+  #+BEGIN_SRC emacs-lisp
+    (defun add (x y &optional z)
+      "Function Doc."
+      (+ x y (or z 0)))
+
+    (add 1 2)                               ; => 3
+    (add 1 2 3)                             ; => 6
+
+    (defun sum (x y &rest args)
+      (+ x y (apply '+ args)))
+
+    (sum 1 2 3 4 5 6)                       ; => 21
+  #+END_SRC
+
+- Clojure
+
+  #+BEGIN_SRC clojure
+    (defn add
+      "Function Doc."
+      ([x y]   (add x y 0))
+      ([x y z] (+ x y z)))
+
+    (add 1 2)                               ; => 3
+    (add 1 2 3)                             ; => 6
+
+    (defn sum [x y & args]
+      (+ x y (apply + args)))
+
+    (sum 1 2 3 4 5 6)                       ; => 21
+  #+END_SRC
+
+** Functions Destructuring
+
+- Emacs-Lisp
+
+  #+BEGIN_SRC emacs-lisp
+    (defun logarithm
+      (&key number &key base)
+      (if base
+        (/ (log number) (log base))
+        (log number)))
+
+    ;; order significant, not key names:
+    (logarithm :foo 8 :bar 2)               ; => 3.0
+    (logarithm :bar 2 :foo 8)               ; => 0.3333333
+  #+END_SRC
+
+- Clojure
+
+  #+BEGIN_SRC clojure
+    (defn logarithm
+      [{x :number b :base}]
+      (/ (Math/log x) (Math/log b)))
+
+    (defn logarithm*                        ; same as `logarithm'
+      [{:keys [number base]}]
+      (/ (Math/log number) (Math/log base)))
+
+    ;; Order is not importent
+    (logarithm {:base 2 :number 8})         ; => 3.0
+    (logarithm {:number 8 :base 2})         ; => 3.0
+
+    (logarithm* {:base 2 :number 8})        ; => 3.0
+    (logarithm* {:number 8 :base 2})        ; => 3.0
+  #+END_SRC
+
+** Anoymouse Function
+
+#+HTML: <br>
+
+- Emacs-Lisp
+
+  #+BEGIN_SRC emacs-lisp
+    ((lambda (a b) (+ a b)) 1 2)                 ; => 3
+  #+END_SRC
+
+- Clojure
+
+  #+BEGIN_SRC clojure
+    ((fn [a b] (+ a b)) 1 2)                 ; => 3
+
+    (#(+ %1 %2) 1 2)                        ; => 3
+    (#(+ 2 %) 1)                            ; => 3
+  #+END_SRC
+
+** Import libraries
+
+#+HTML: <br>
+
+- Emacs-Lisp
+
+  #+BEGIN_SRC emacs-lisp
+    (require 's)
+
+    (s-trim "  Hello  ")                    ; => "Hello"
+  #+END_SRC
+
+- Clojure
+
+  #+BEGIN_SRC clojure
+    (require '[clojure.string :as str])
+
+    (str/trim "  Hello  ")                  ; => "Hello"
+    (clojure.string/trim "  Hello  ")       ; => "Hello"
+  #+END_SRC
+
+** Atoms
+
+#+HTML: <br>
+
+- Emacs-Lisp
+
+  #+BEGIN_SRC emacs-lisp
+    ;; Emacs-Lisp no Atoms
+  #+END_SRC
+
+- Clojure
+
+  #+BEGIN_SRC clojure
+    (def aa (atom nil))
+
+    (reset! aa 123)                         ; => aa becomes `123'
+    @aa                                     ; => 123
+    (swap! aa inc)                          ; => aa becomes `124'
+
+    (def bb (atom {:a "aaa" :b "bbb"}))
+    @bb                                     ; => {:a "aaa" :b "bbb"}
+    (swap! bb assoc-in [:b] 1)              ; => bb becomes `{:a "aaa" :b 1}'
+    @bb                                     ; => {:a "aaa" :b 1}
+
+    (def bb (atom {:b {:c 12}}))         ; => {:b {:c 12}}
+    (swap! bb assoc-in [:b :c] 1)        ; => bb becomes `{:b {:c 1}}'
+    @bb                                  ; => {:b {:c 1}}
+  #+END_SRC
+
+** Threads
+
+#+HTML: <br>
+
+- Emacs-Lisp
+
+  #+BEGIN_SRC emacs-lisp
+    ;; Emacs-Lisp doesn't has `thread' support
+  #+END_SRC
+
+- Clojure
+
+  #+BEGIN_SRC clojure
+    (do
+      (Thread/sleep 3000)
+      (println "hello"))
+
+    ;; Wait for 3 sec and then "hello" is printed
+
+    (do
+      (future
+        (Thread/sleep 3000)
+        (println "after sleep"))
+      (println "hello"))
+
+    ;; hello
+    ;; nil
+    ;; after sleep
+  #+END_SRC
+
+** Macro
+
+#+HTML: <br>
+
+- Emacs-Lisp
+
+  #+BEGIN_SRC emacs-lisp
+    (defmacro infix (expr)
+      (list (cadr expr) (car expr) (caddr expr)))
+
+    (macroexpand-1 '(infix (1 + 3)))        ; => (+ 1 3)
+
+    (infix (1 + 3))                 ; => 4
+  #+END_SRC
+
+- Clojure
+
+  #+BEGIN_SRC clojure
+    (defmacro infix [expr]
+      (list (second expr) (first expr) (nth expr 2)))
+
+    (macroexpand-1 '(infix (1 + 3)))        ; => (+ 1 3)
+
+    (infix (1 + 3))                         ; => 4
+
+    (defmacro when
+      "Evaluates test. If logical true, evaluates body in an implicit do."
+      {:added "1.0"}
+      [test & body]
+      (list 'if test (cons 'do body)))
+  #+END_SRC
+
+** Thread first Macro ->
+
+#+HTML: <br>
+
+- Emacs-Lisp
+
+  #+BEGIN_SRC emacs-lisp
+    (require 'dash) ; https://github.com/magnars/dash.el
+
+    (-> 2 (+ 3) (- 4) (* 5) (- 3))          ; => 2
+
+    (macroexpand-all
+     '(-> 2 (+ 3) (- 4) (* 5) (- 3)))       ; => (- (* (- (+ 2 3) 4) 5) 3)
+  #+END_SRC
+
+- Clojure
+
+  #+BEGIN_SRC clojure
+    (-> 2 (+ 3) (- 4) (* 5) (- 3))          ; => 2
+
+    (first (.split (.replace (.toUpperCase "a b c d") "A" "X") " "))
+
+    (-> "a b c d"
+        .toUpperCase
+        (.replace "A" "X")
+        (.split " ")
+        first)                       ; => "X"
+  #+END_SRC
+
+** Thread last Macro ->>
+
+#+HTML: <br>
+
+- Emacs-Lisp
+
+  #+BEGIN_SRC emacs-lisp
+    (require 'dash) ; https://github.com/magnars/dash.el
+
+    (->> 5 (+ 3) (/ 2) (- 1))               ; => 1
+
+    (macroexpand-all
+     '(->> 5 (+ 3) (/ 2) (- 1))) ;; =>  (- 1 (/ 2 (+ 3 5)))
+  #+END_SRC
+
+- Clojure
+
+  #+BEGIN_SRC clojure
+
+    (reduce +
+            (take 10
+                  (filter even?
+                          (map #(* % %)
+                               (range)))))
+
+    (->> (range)
+         (map #(* % %))
+         (filter even?)
+         (take 10)
+         (reduce +))                 ; => 1140
+  #+END_SRC
+
+* Clojure Java Interop
+:PROPERTIES:
+:REMARK_CLASS:    center, middle, inverse
+:END:
+
+#+HTML: <br>
+
+#+ATTR_HTML: :width 20%
+[[file:picts/clojure.png]]
+
+http://clojure.org/reference/java_interop
+
+** Class Import
+
+#+HTML: <br>
+
+#+BEGIN_SRC clojure
+  (import [java.util ArrayList])
+
+  (def foo (ArrayList. [1 2 3 4]))        ; => [1 2 3 4]
+
+  (.containsAll foo [2 3 4])              ; => true
+#+END_SRC
+
+** Member Access
+
+#+HTML: <br>
+
+#+BEGIN_SRC clojure
+  (.toUpperCase "fred")                   ; => "FRED"
+
+  (.getName String)                       ; => java.lang.String
+
+  (.x (java.awt.Point. 1 2))              ; => 1
+
+  (System/getProperty "java.vm.version")  ; => "25.51-b03"
+
+  Math/PI                                 ; => 3.141592653589793
+#+END_SRC
+
+** doto Macro
+
+#+HTML: <br>
+
+#+BEGIN_SRC clojure
+  (doto (new java.util.HashMap)
+    (.put "a" 1)
+    (.put "b" 2))                         ; => {"a" 1, "b" 2}
+
+  (let [h (new java.util.HashMap)]
+    (.put h "a" 1)
+    (.put h "b" 2)
+    h)                                    ; => {"a" 1, "b" 2}
+#+END_SRC
+
+* Hello, Clojure
+:PROPERTIES:
+:REMARK_CLASS:    center, middle, inverse
+:END:
+
+#+HTML: <br>
+
+#+ATTR_HTML: :width 20%
+[[file:picts/clojure.png]]
+
+** Clojure's Building System
+
+#+HTML: <br> <div id="build-system"> </div> <br>
+
+** Leinigen
+
+#+HTML: <br>
+
+- Download [[https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein][lein script]] and install to your system
+
+- Use =lein= to create new project
+
+  #+BEGIN_SRC sh
+    coldnew@Sara ~ $ lein new nice-project
+    Generating a project called nice-project based on the 'default' template.
+    The default template is intended for library projects, not applications.
+    To see other templates (app, plugin, etc), try `lein help new`.
+  #+END_SRC
+
+  #+BEGIN_SRC sh
+    .
+    ├── CHANGELOG.md
+    ├── LICENSE
+    ├── README.md
+    ├── doc
+    │   └── intro.md
+    ├── project.clj
+    ├── resources
+    ├── src
+    │   └── nice_project
+    │       └── core.clj
+    └── test
+        └── nice_project
+            └── core_test.clj
+  #+END_SRC
+
+** Leinigen (cont'd)
+
+#+HTML: <br>
+
+- Edit =project.clj= to add new dependancies or future
+
+  #+BEGIN_SRC clojure
+    (defproject nice-project "0.1.0-SNAPSHOT"
+      :description "FIXME: write description"
+      :url "http://example.com/FIXME"
+      :license {:name "Eclipse Public License"
+                :url "http://www.eclipse.org/legal/epl-v10.html"}
+      :dependencies [[org.clojure/clojure "1.8.0"]])
+  #+END_SRC
+
+- You can find clojure libraries in [[https://clojars.org/][Clojars]]
+
+** Leinigen (cont'd)
+
+#+HTML: <br>
+
+- Edit =src/nice_project/core.clj=
+
+  #+BEGIN_SRC clojure
+    (ns nice-project.core)
+
+    (defn add-3
+      "Return x + 3"
+      [x]
+      (+ x 3))
+
+    (defn -main []
+      (println "Hello CLojure!"))
+  #+END_SRC
+
+- Use =lein run= to execute main function
+
+  #+BEGIN_SRC sh
+    coldnew@Sara ~ $ lein run -m nice-project.core
+    Hello CLojure!
+  #+END_SRC
+
+** Leinigen (cont'd)
+
+- Edit =test/nice_project/core_test.clj=
+
+  #+BEGIN_SRC clojure
+    (ns nice-project.core-test
+      (:require [clojure.test :refer :all]
+                [nice-project.core :refer :all]))
+
+    (deftest add-3-test
+      (testing "I will success."
+        (is (= (add-3 10) 13))))
+
+    (deftest add-3-test-failed
+      (testing "I fail."
+        (is (= (add-3 10) 10))))
+  #+END_SRC
+
+- Use =lein test= to execute test
+
+  #+BEGIN_SRC sh
+    coldnew@Sara ~ $ lein test nice-project.core-test
+
+    lein test :only nice-project.core-test/add-3-test-failed
+
+    FAIL in (add-3-test-failed) (core_test.clj:11)
+    I fail.
+    expected: (= (add-3 10) 10)
+      actual: (not (= 13 10))
+
+    Ran 2 tests containing 2 assertions.
+    1 failures, 0 errors.
+    Tests failed.
+  #+END_SRC
+
+* ClojureScript
+:PROPERTIES:
+:REMARK_CLASS:    center, middle, inverse
+:END:
+
+#+HTML: <br>
+
+#+ATTR_HTML: :width 20%
+[[file:picts/cljs.png]]
+
+http://clojurescript.net/
+
+** About ClojureScript
+
+#+HTML: <br>
+
+- Clojure dialect compile to javascript
+
+- Compiled by [[https://developers.google.com/closure/compiler/][Google's Closure Compiler]]
+
+  + Compile ClojureScript to Javascript
+
+  + Minification and Optimization
+
+    + none, whitespace, simple, advanced optimization
+
+- Mantained by [[https://github.com/swannodette][David Nolen]]
+
+#+HTML: <br>
+
+#+ATTR_HTML: :width 40%
+[[file:picts/david.png]]
+
+* ☛ TODO Hello, ClojureScript
+:PROPERTIES:
+:REMARK_CLASS:    center, middle, inverse
+:END:
+
+#+HTML: <br>
+
+#+ATTR_HTML: :width 20%
+[[file:picts/cljs.png]]
+
+** Create project by Leinigen
+
+- TODO
+
+* ☛ TODO When ClojureScript meet React
+:PROPERTIES:
+:REMARK_CLASS:    center, middle, inverse
+:END:
+
+#+HTML: <br>
+
+#+ATTR_HTML: :width 20%
+[[file:picts/cljs.png]]
+
+* Resources
+:PROPERTIES:
+:REMARK_CLASS:    center, middle, inverse
+:END:
+
+http://clojure.org/community/resources
+
+** Clojure Books (1/3)
+
+#+HTML: <br> <div id="cljbook1"> </div> <br>
+
+** Clojure Books (2/3)
+
+#+HTML: <br> <div id="cljbook2"> </div>
+
+** Clojure Books (3/3)
+
+#+HTML: <br> <div id="cljbook3"> </div>
+
+** ClojureScript Books
+
+#+HTML: <br> <div id="cljsbook1"> </div>
+
+- [[https://github.com/magomimmo/modern-cljs][modern-cljs]]
+
+  A series of tutorials on ClojureScript
+
+- [[https://github.com/funcool/clojurescript-unraveled][clojurescript-unraveled]]
+
+  An open source book about ClojureScript. [[http://funcool.github.io/clojurescript-unraveled/][(read online)]]
+
+** Conference
+
+#+HTML: <br>
+
+- [[http://clojurewest.org/][Clojure/West]] (usually in March)
+
+  Youtube: [[https://www.youtube.com/watch?v=6DaBmz_6y0s&list=PLZdCLR02grLrKAOj8FJ1GGmNM5l7Okz0a][2015]] [[https://www.youtube.com/watch?v=axztcYJUN4I&list=PLZdCLR02grLp__wRg5OTavVj4wefg69hM][2014]]
+
+- [[http://clojure-conj.org/][Clojure/conj]] (usually in November)
+
+  Youtube: [[https://www.youtube.com/watch?v=Y2jQe8DFzUM&list=PLZdCLR02grLrl5ie970A24kvti21hGiOf][2015]] [[https://www.youtube.com/watch?v=BNkYYYyfF48&list=PLZdCLR02grLoc322bYirANEso3mmzvCiI][2014]]
+
+- [[http://euroclojure.com/][EuroClojure]] (usually mid-year)
+
+  Youtube: [[https://www.youtube.com/watch?v=ByNs9TG30E8&list=PLZdCLR02grLoBx0Y5ZrpdmLxc160PIwzQ][2015]]
+
+- [[http://www.clojurebridge.org/][ClojureBridge]] - beginner workshops for women
+
+- [[http://lanyrd.com/search/?context=future&q=clojure&type=conference][Clojure Events]]
+
+** Exercise
+
+#+HTML: <br>
+
+- [[https://www.4clojure.com/][4Clojure]]
+
+- [[http://clojurekoans.com/][Clojure Koans]]
+
+- [[https://projecteuler.net/][Project Euler]]
+
+** Find Jobs
+
+#+HTML: <br>
+
+- https://weworkremotely.com/
+
+- http://careers.stackoverflow.com/jobs/remote
+
+- http://www.indeed.com/l-Remote-jobs.html
+
+- https://remoteok.io/
+
+- https://functionaljobs.com/
+
+- http://jobs.functionalworks.com/
+
+- https://lispjobs.wordpress.com/
+
+- [[https://www.linkedin.com/groups/6620522][Clojure Jobs on Linkedin]]
+
+* Q & A
+:PROPERTIES:
+:REMARK_CLASS:    center, middle
+:END:
+
+#+BEGIN_CENTER
+[[file:picts/qa.png]]
+#+END_CENTER
+
+* Reference                                                        :noexport:
+
+- https://kimh.github.io/clojure-by-example/
+
+- http://hyperpolyglot.org/lisp
+
+- http://misgod.github.io/slide-clojure101/
+
+- http://www.tryclj.com/
+
+- http://clojurescript.net/
+
+- http://iloveponies.github.io/120-hour-epic-sax-marathon/I-am-a-horse-in-the-land-of-booleans.html
+
+- https://en.wikibooks.org/wiki/Clojure_Programming
+
+- https://en.wikibooks.org/wiki/Learning_Clojure
+
+* NOEXPORT :noexport:
+** hi ?
+
+#+HTML: <div class="row "><div class="col-md-6 ">
+
+#+BEGIN_SRC clojure
+(def aa "asdasd")
+(defn aa [] "asdasd" )
+#+END_SRC
+
+#+HTML: </div><div class="col-md-6">
+
+#+BEGIN_SRC clojure
+(def aa "asdasd")
+(defn aa [] "asdasd" )
+#+END_SRC
+
+#+HTML: </div> </div>
