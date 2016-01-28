@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-	<!-- 2016-01-28 Thu 17:08 -->
+	<!-- 2016-01-29 Fri 00:20 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>From Emacs-Lisp to Clojure</title>
@@ -481,7 +481,7 @@ class: center, middle, inverse
     <pre class="src src-emacs-lisp"><span style="color: #aadddd;">(</span><span style="color: #aaffaa;">let</span> <span style="color: #81d4fa;">(</span><span style="color: #aaccff;">(</span>x <span style="color: #ccaaff;">1</span><span style="color: #aaccff;">)</span>
           <span style="color: #aaccff;">(</span>y <span style="color: #ccaaff;">2</span><span style="color: #aaccff;">)</span><span style="color: #81d4fa;">)</span>
       <span style="color: #81d4fa;">(</span>+ x y<span style="color: #81d4fa;">)</span><span style="color: #aadddd;">)</span>                              <span style="color: #5f5f5f; font-style: italic;">; </span><span style="color: #9ac; font-style: italic;">=&gt; 3</span>
-    
+      <span style="color: #aadddd;">(</span><span style="color: #aaffaa;">defvar</span> <span style="color: #aaccff;">a</span> <span style="color: #ccaaff;">1</span><span style="color: #aadddd;">)</span>
     <span style="color: #aadddd;">(</span><span style="color: #aaffaa;">let</span> <span style="color: #81d4fa;">(</span><span style="color: #aaccff;">(</span>hello <span style="color: #aadddd;">"hi"</span><span style="color: #aaccff;">)</span><span style="color: #81d4fa;">)</span>
       <span style="color: #81d4fa;">(</span><span style="color: #aaffaa;">setq</span> hello <span style="color: #aadddd;">"world"</span><span style="color: #81d4fa;">)</span>
       hello<span style="color: #aadddd;">)</span>                                <span style="color: #5f5f5f; font-style: italic;">; </span><span style="color: #9ac; font-style: italic;">=&gt; "world"</span>
@@ -803,7 +803,7 @@ class: center, middle, inverse
     
     <span style="color: #aadddd;">(</span>macroexpand-1 '<span style="color: #81d4fa;">(</span>infix <span style="color: #aaccff;">(</span><span style="color: #ccaaff;">1</span> + <span style="color: #ccaaff;">3</span><span style="color: #aaccff;">)</span><span style="color: #81d4fa;">)</span><span style="color: #aadddd;">)</span>        <span style="color: #5f5f5f; font-style: italic;">; </span><span style="color: #9ac; font-style: italic;">=&gt; (+ 1 3)</span>
     
-    <span style="color: #aadddd;">(</span><span style="color: #aaffaa;">infix</span> <span style="color: #81d4fa;">(</span><span style="color: #ccaaff;">1</span> + <span style="color: #ccaaff;">3</span><span style="color: #81d4fa;">)</span><span style="color: #aadddd;">)</span>                 <span style="color: #5f5f5f; font-style: italic;">; </span><span style="color: #9ac; font-style: italic;">=&gt; 4</span>
+    <span style="color: #aadddd;">(</span>infix <span style="color: #81d4fa;">(</span><span style="color: #ccaaff;">1</span> + <span style="color: #ccaaff;">3</span><span style="color: #81d4fa;">)</span><span style="color: #aadddd;">)</span>                 <span style="color: #5f5f5f; font-style: italic;">; </span><span style="color: #9ac; font-style: italic;">=&gt; 4</span>
     </pre>
     </div>
 
@@ -1300,6 +1300,14 @@ class: center, middle
 	</script>
 	<script src="assets/slide/target/js/app.js">
 	 slide.app.init();
+	</script>
+	<script>
+	 (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	     (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+				  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	 })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+	 ga('create', 'UA-42122243-1', 'auto');
+	 ga('send', 'pageview');
 	</script>
     </body>
 </html>
