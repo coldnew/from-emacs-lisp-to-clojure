@@ -1,1 +1,0 @@
-assets/slide/target/js
