@@ -14,8 +14,8 @@ DATE=$(date)
 # Copy all prebuild files
 cp -rf slide/slide.html  $OUT/index.html
 cp -rf slide/assets      $OUT
-cp -a  slide/js          $OUT
-cp -a  slide/picts       $OUT
+cp -rf slide/assets/slide/target/js $OUT
+cp -rf slide/assets/picts       $OUT
 
 # go to the out directory and create a *new* Git repo
 cd $OUT

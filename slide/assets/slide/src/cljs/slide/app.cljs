@@ -1,7 +1,6 @@
 (ns slide.app
   (:require [hipo.core :as hipo]))
 
-
 (defn- add-element-to-id
   "Add hiccup element to id."
   [id body]
