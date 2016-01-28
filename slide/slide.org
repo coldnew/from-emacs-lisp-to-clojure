@@ -1053,6 +1053,8 @@ http://clojure.org/community/resources
 
 - https://en.wikibooks.org/wiki/Learning_Clojure
 
+- http://htmltohiccup.herokuapp.com/
+
 * NOEXPORT :noexport:
 ** hi ?
 

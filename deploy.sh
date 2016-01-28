@@ -9,16 +9,18 @@ ID=$(git rev-parse --short HEAD)
 DATE=$(date)
 
 # remove all data in $OUT
-(cd $OUT; git rm -rf *)
+#(cd $OUT; git rm -rf *)
 
 # Copy all prebuild files
 cp -rf slide/slide.html  $OUT/index.html
 cp -rf slide/assets      $OUT
+cp -rf slide/assets/vendors      $OUT/assets/vendors
 cp -rf slide/assets/slide/target/js $OUT
 cp -rf slide/assets/picts       $OUT
 
 # go to the out directory and create a *new* Git repo
 cd $OUT
+find . -name .gitignore -exec rm -rf {} \;
 
 # We permit following exit with error
 set +e
