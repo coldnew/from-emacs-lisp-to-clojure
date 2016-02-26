@@ -1026,6 +1026,8 @@ http://clojure.org/community/resources
 
 - [[https://www.linkedin.com/groups/6620522][Clojure Jobs on Linkedin]]
 
+- http://clojurework.com/
+
 * Q & A
 :PROPERTIES:
 :REMARK_CLASS:    center, middle
