@@ -976,6 +976,10 @@ http://clojure.org/community/resources
 
   An open source book about ClojureScript. [[http://funcool.github.io/clojurescript-unraveled/][(read online)]]
 
+- [[https://www.niwi.nz/cljs-workshop/][ClojureScript Tutorial]]
+
+  Another tutorial written by [[mailto:niwi@niwi.be][Andrey Antukh]] (ClojureScript Unraveled Author).
+
 ** Conference
 
 #+HTML: <br>
